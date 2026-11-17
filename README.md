@@ -10,39 +10,31 @@ Videos are synthetic. The tool does not send messages or perform payments.
 Download the versioned installer and run it:
 
 ```sh
-curl -fsSL https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.1.0/install.sh -o /tmp/chat-video-install.sh
+curl -fsSL https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/install.sh -o /tmp/chat-video-install.sh
 sh /tmp/chat-video-install.sh
 ```
 
-The installer detects your platform, verifies the binary against `SHA256SUMS`, and installs it to `~/.local/bin/chat-video`.
-Set `CHAT_VIDEO_INSTALL_DIR` to choose another directory. Add the installation directory to your `PATH`.
+The installer detects your platform, verifies the archive, and installs the complete package.
+It links `~/.local/bin/chat-video`. Add that directory to `PATH`.
+Set `CHAT_VIDEO_INSTALL_DIR` and `CHAT_VIDEO_DATA_DIR` to choose other locations.
 
-On macOS, install ffmpeg first:
-
-```sh
-brew install ffmpeg
-```
-
-Then install the rendering dependencies and check readiness:
-
-```sh
-~/.local/bin/chat-video setup
-~/.local/bin/chat-video doctor
-```
-
-Setup downloads pinned Chromium and Apple emoji images. Linux also receives pinned ffmpeg.
-Missing Linux system libraries require the administrator command printed by setup.
-The renderer uses local assets after setup.
+Chromium, ffmpeg, ffprobe, SF Pro, Apple emoji, and Linux browser libraries are included.
+No Homebrew, setup downloads, GitHub account, or administrator package installation is needed.
+Rendering works offline after installation.
 
 ## Direct downloads
 
-| Platform | Binary |
-| --- | --- |
-| Apple Silicon macOS | [darwin-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.1.0/chat-video-0.1.0-darwin-arm64) |
-| Linux x64 | [linux-x64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.1.0/chat-video-0.1.0-linux-x64) |
-| Linux arm64 | [linux-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.1.0/chat-video-0.1.0-linux-arm64) |
+Download your archive, extract the whole folder, and run `./chat-video`.
+You can also run `sh ./install.sh` inside that folder.
+Keep `runtime` beside the executable.
 
-[Release and checksums](https://github.com/Lucas-AI-Org/chat-video/releases/tag/chat-video-v0.1.0)
+| Platform | Archive |
+| --- | --- |
+| Apple Silicon macOS | [darwin-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-darwin-arm64.tar.gz) |
+| Linux x64 | [linux-x64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-linux-x64.tar.gz) |
+| Linux arm64 | [linux-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-linux-arm64.tar.gz) |
+
+[Release and checksums](https://github.com/Lucas-AI-Org/chat-video/releases/tag/chat-video-v0.2.0)
 
 ## Render a conversation
 
@@ -78,8 +70,7 @@ Videos export at 60 fps with screen and framed MP4s, a poster, and review images
 Supported formats are `9:16`, `4:5`, `1:1`, and `16:9`.
 Inspect the contact sheet and report before sharing a video.
 
-Text follows the source system font stack. For matching typography on Linux, supply SF Pro using `--fonts <directory>`.
-Proprietary fonts are not included.
+SF Pro is bundled. Use `--fonts <directory>` to override it.
 
 ## About this repository
 
@@ -87,5 +78,6 @@ This repository distributes release binaries, the installer, and usage instructi
 The rendering implementation and visual assets originate from [Onkeiki's message demo](https://onkeiki.com/message-demo).
 The binaries use React and the Bun runtime.
 
-Version 0.1.0 targets Apple Silicon macOS, Linux x64, and Linux arm64.
-The Linux targets are cross-compiled. Runtime smoke checks were performed on macOS.
+Version 0.2.0 targets Apple Silicon macOS, Linux x64, and Linux arm64.
+Offline rendering checks passed on macOS and Debian Linux containers. Linux x64 checks used emulation.
+Other Linux distributions remain unverified.
