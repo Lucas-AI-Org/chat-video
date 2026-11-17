@@ -2,7 +2,8 @@
 
 Render scripted iMessage and WhatsApp conversations with Sones defaults, using Onkeiki's message-demo renderer.
 
-Download and run it without an account, API key, repository checkout, Bun, Node, or Xcode.
+This repository is private. Downloads need the GitHub CLI signed in to an account with access.
+No API key, repository checkout, Bun, Node, or Xcode is needed.
 Videos are synthetic. The tool does not send messages or perform payments.
 
 ## Install
@@ -10,16 +11,16 @@ Videos are synthetic. The tool does not send messages or perform payments.
 Download the versioned installer and run it:
 
 ```sh
-curl -fsSL https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/install.sh -o /tmp/chat-video-install.sh
-sh /tmp/chat-video-install.sh
+gh release download chat-video-v0.2.1 --repo Lucas-AI-Org/chat-video --pattern install.sh --dir /tmp/chat-video-release --clobber
+sh /tmp/chat-video-release/install.sh
 ```
 
-The installer detects your platform, verifies the archive, and installs the complete package.
+The installer detects your platform, downloads the archive with `gh`, verifies it, and installs the complete package.
 It links `~/.local/bin/chat-video`. Add that directory to `PATH`.
 Set `CHAT_VIDEO_INSTALL_DIR` and `CHAT_VIDEO_DATA_DIR` to choose other locations.
 
 Chromium, ffmpeg, ffprobe, SF Pro, Apple emoji, and Linux browser libraries are included.
-No Homebrew, setup downloads, GitHub account, or administrator package installation is needed.
+No Homebrew, setup downloads, or administrator package installation is needed.
 Rendering works offline after installation.
 
 ## Direct downloads
@@ -28,13 +29,12 @@ Download your archive, extract the whole folder, and run `./chat-video`.
 You can also run `sh ./install.sh` inside that folder.
 Keep `runtime` beside the executable.
 
-| Platform | Archive |
-| --- | --- |
-| Apple Silicon macOS | [darwin-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-darwin-arm64.tar.gz) |
-| Linux x64 | [linux-x64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-linux-x64.tar.gz) |
-| Linux arm64 | [linux-arm64](https://github.com/Lucas-AI-Org/chat-video/releases/download/chat-video-v0.2.0/chat-video-0.2.0-linux-arm64.tar.gz) |
+```sh
+gh release download chat-video-v0.2.1 --repo Lucas-AI-Org/chat-video --pattern 'chat-video-0.2.1-linux-x64.tar.gz' --pattern SHA256SUMS
+```
 
-[Release and checksums](https://github.com/Lucas-AI-Org/chat-video/releases/tag/chat-video-v0.2.0)
+Use `darwin-arm64`, `linux-x64`, or `linux-arm64` in the pattern.
+[Release and checksums](https://github.com/Lucas-AI-Org/chat-video/releases/tag/chat-video-v0.2.1)
 
 ## Render a conversation
 
@@ -78,6 +78,7 @@ This repository distributes release binaries, the installer, and usage instructi
 The rendering implementation and visual assets originate from [Onkeiki's message demo](https://onkeiki.com/message-demo).
 The binaries use React and the Bun runtime.
 
-Version 0.2.0 targets Apple Silicon macOS, Linux x64, and Linux arm64.
+Version 0.2.1 targets Apple Silicon macOS, Linux x64, and Linux arm64.
+A 32-second render passed in a Linux container limited to 2 GB of memory with no swap.
 Offline rendering checks passed on macOS and Debian Linux containers. Linux x64 checks used emulation.
 Other Linux distributions remain unverified.
