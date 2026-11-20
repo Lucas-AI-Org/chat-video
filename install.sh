@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
-version=0.2.1
+version=0.2.2
 repo=Lucas-AI-Org/chat-video
 case "$(uname -s)-$(uname -m)" in
   Darwin-arm64) platform=darwin-arm64 ;;
@@ -8,15 +8,21 @@ case "$(uname -s)-$(uname -m)" in
   Linux-aarch64|Linux-arm64) platform=linux-arm64 ;;
   *) echo "Supported platforms: Apple Silicon macOS, Linux x64, Linux arm64." >&2; exit 1 ;;
 esac
-if ! command -v gh >/dev/null 2>&1; then
-  echo "The repository is private. Install the GitHub CLI and run gh auth login first." >&2
-  exit 1
-fi
 asset="chat-video-${version}-${platform}.tar.gz"
 download_dir=$(mktemp -d)
 trap 'rm -rf "$download_dir"' EXIT
 trap 'exit 1' HUP INT TERM
-gh release download "chat-video-v${version}" --repo "$repo" --pattern "$asset" --pattern SHA256SUMS --dir "$download_dir"
+if command -v curl >/dev/null 2>&1; then
+  base="https://github.com/$repo/releases/download/chat-video-v${version}"
+  for name in "$asset" SHA256SUMS; do
+    curl -fsSL --retry 3 "$base/$name" -o "$download_dir/$name"
+  done
+elif command -v gh >/dev/null 2>&1; then
+  gh release download "chat-video-v${version}" --repo "$repo" --pattern "$asset" --pattern SHA256SUMS --dir "$download_dir"
+else
+  echo "Install curl or the GitHub CLI to download chat-video." >&2
+  exit 1
+fi
 (
   cd "$download_dir"
   awk -v asset="$asset" '$2 == asset { print; found=1 } END { if (!found) exit 1 }' SHA256SUMS > selected.sha256
